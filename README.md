@@ -1,27 +1,102 @@
-# AngularMuiltForms
+# Dynamic Forms Angular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.3.
 
-## Development server
+The project aims to facilitate the use of common forms such as select, textArea, standard input, checkbox and checkbox group.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+The following are examples for generating a form for each field:
 
-## Code scaffolding
+```ts
+new FormText({
+  key: "em",
+  label: "Email",
+  required: true,
+});
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+new FormTextArea({
+  key: "description",
+  label: "Descrição",
+  required: true,
+});
 
-## Build
+new FormSelect({
+  key: "animal",
+  label: "Favorite animal",
+  options: [
+    { key: "cat", value: "Cat" },
+    { key: "dog", value: "Dog" },
+  ],
+  required: true,
+});
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+new FormCheckbox({
+  key: "readAgreement",
+  label: "Read agreement?",
+  required: true,
+});
 
-## Running unit tests
+new FormCheckboxGroup({
+  key: "items",
+  label: "Items",
+  options: [
+    { key: "cat", value: "Cat" },
+    { key: "dog", value: "Dog" },
+    { key: "wold", value: "Wolf" },
+    { key: "horse", value: "Horse" },
+  ],
+  group: true,
+  required: true,
+});
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Basically they are Instantiations of their respective classes, their parameter chain comes from the base model, where below we have the parameters that can be inferred in the creation of each class/field:
 
-## Running end-to-end tests
+```ts
+class FormInputBase {
+  value: T | undefined;
+  key: string;
+  label: string;
+  required: boolean;
+  order: number;
+  controlType: string;
+  type: string;
+  options: optionsProps[];
+  validators: ValidatorFn[] | null;
+  readonly: boolean;
+  description?: string;
+  group?: boolean;
+}
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+In order to actually use this creation, we must first create the fields by instantiating the classes mentioned above and then send them in the html/template of the component where it will be used.
 
-## Further help
+```html
+<dynamic-form [formFields]="myForm"></dynamic-form>
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```ts
+  myForm: FormInputBase<string | boolean>[] = [
+    new FormText({
+      key: 'em',
+      label: 'Email',
+      required: true,
+      validators: [Validators.email],
+    }),
+  ];
+```
+
+For better understanding download the project run the installation commands and learn how it works.
+
+```bash
+ yarn
+ yarn start
+```
+
+or
+
+```bash
+ npm install
+ npm run start
+```
+
+Done with :heart: by <a href="https://github.com/SidneyRoberto9" target="_blank">Sidney Roberto</a>
