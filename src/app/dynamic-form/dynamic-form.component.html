@@ -1,0 +1,9 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <section *ngFor="let field of formFields" class="form-row">
+    <app-dynamic-form-input
+      [field]="field"
+      [form]="form"
+    ></app-dynamic-form-input>
+  </section>
+  <button type="submit">Submit</button>
+</form>

@@ -1,0 +1,69 @@
+<section [formGroup]="form">
+  <label [attr.for]="field.key">{{ field.label }}</label>
+
+  <section [ngSwitch]="field.controlType">
+    <input
+      *ngSwitchCase="'text'"
+      [formControlName]="field.key"
+      [id]="field.key"
+      [type]="field.type"
+    />
+    <textarea
+      *ngSwitchCase="'textArea'"
+      [formControlName]="field.key"
+      [id]="field.key"
+    ></textarea>
+
+    <select
+      *ngSwitchCase="'select'"
+      [id]="field.key"
+      [formControlName]="field.key"
+    >
+      <option *ngFor="let opt of field.options" [value]="opt.key">
+        {{ opt.value }}
+      </option>
+    </select>
+
+    <input
+      *ngSwitchCase="'checkbox'"
+      type="checkbox"
+      [id]="field.key"
+      [name]="field.key"
+      [formControlName]="field.key"
+    />
+
+    <div *ngSwitchCase="'checkboxGroup'">
+      <div [formGroupName]="field.key">
+        <div *ngFor="let opt of field.options">
+          <input
+            type="checkbox"
+            [id]="opt.key"
+            [name]="opt.key"
+            [formControlName]="opt.key"
+          />
+          <label [attr.for]="opt.key">{{ opt.value }}</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="errorMessage" *ngIf="hasFieldError()">
+    <div *ngIf="isErrorType('required')">{{ field.label }} is required.</div>
+
+    <div *ngIf="isErrorType('pattern')">{{ field.label }} pattern Error.</div>
+
+    <div *ngIf="isErrorType('minlength')">
+      {{ field.label }} did not exceed the minimum limit.
+    </div>
+
+    <div *ngIf="isErrorType('maxlength')">
+      {{ field.label }} has exceeded the maximum limit.
+    </div>
+
+    <div *ngIf="isErrorType('email')">{{ field.label }} is not email.</div>
+
+    <div *ngIf="isRequiredOne()">
+      {{ field.label }} need at least one selected.
+    </div>
+  </section>
+</section>
